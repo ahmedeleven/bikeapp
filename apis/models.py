@@ -16,7 +16,7 @@ class Station(models.Model):
 class Trip(models.Model):
 	departure_time = models.DateField()
 	return_time = models.DateField()
-	departure_station_id = models.ForeignKey(Station, null=True, on_delete=models.SET_NULL)
-	return_station_id = models.ForeignKey(Station, null=True, on_delete=models.SET_NULL)
+	departure_station_id = models.ForeignKey(Station, null=True, on_delete=models.SET_NULL, related_name='departure_station')
+	return_station_id = models.ForeignKey(Station, null=True, on_delete=models.SET_NULL, related_name='return_station')
 	covered_distance = models.IntegerField(default=0)
 	duration = models.IntegerField(default=0)

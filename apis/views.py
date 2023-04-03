@@ -17,7 +17,7 @@ from rest_framework.pagination import PageNumberPagination
 # import stations to stations table
 def import_stations(request):
 	# read the stations from CSV file to a pandas dataframe
-	stations_df = pd.read_csv("static/assets/helsinkistations.csv")
+	stations_df = pd.read_csv("https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv")
 	# remove unnecessary columns from the dataframe
 	stations_df = stations_df.drop(["FID","Operaattor"], axis=1)
 	# change all columns to lower case to match our created models
@@ -30,9 +30,9 @@ def import_stations(request):
 
 
 def import_trips(request):
-	trips1 = pd.read_csv("static/assets/2021-05.csv")
-	trips2 = pd.read_csv("static/assets/2021-06.csv")
-	trips3 = pd.read_csv("static/assets/2021-07.csv")
+	trips1 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv")
+	trips2 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv")
+	trips3 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv")
 	trips_df = pd.concat([trips1,trips2,trips3])
 	trips_df = trips_df.drop(["Departure station name","Return station name"], axis=1)
 	trips_df = trips_df.rename(columns={"Departure":"departure_time","Return":"return_time","Departure station id":"departure_station_id", "Return station id":"return_station_id", "Covered distance (m)":"covered_distance", "Duration (sec.)":"duration"})

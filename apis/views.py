@@ -6,6 +6,12 @@ from .models import Trip
 from django.http import HttpResponse
 from tqdm import tqdm
 from django.db.models import Q
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import TripSerializer, StationSerializer
+from rest_framework.pagination import PageNumberPagination
+
 
 
 # import stations to stations table
@@ -48,4 +54,78 @@ def import_trips(request):
 	        progress_bar.update(len(batch))
 
 	return HttpResponse("Done...")
+
+
+
+@api_view(['GET'])
+def test_function(request):
+	return Response({'message': 'Hello!!'})
+
+
+
+
+@api_view(['GET'])
+def trips_list(request):
+	page_number = request.GET.get('page', 1)
+	page_size = request.GET.get('page_size', 100)
+	paginator = PageNumberPagination()
+	paginator.page_size = page_size
+	trips = Trip.objects.all()
+	result_page = paginator.paginate_queryset(trips, request)
+	serializer = TripSerializer(result_page, many=True, context={'request': request})
+	return paginator.get_paginated_response(serializer.data)
+
+
+
+@api_view(['GET'])
+def stations_list(request):
+	page_number = request.GET.get('page',1)
+	page_size = request.GET.get('page_size',20)
+	paginator = PageNumberPagination()
+	paginator.page_size = page_size
+	stations = Station.objects.all()
+	result_page = paginator.paginate_queryset(stations, request)
+	serializer = StationSerializer(result_page, many=True, context={'request': request})
+	return paginator.get_paginated_response(serializer.data)
+
+
+@api_view(['GET'])
+def station_details(request, station_id):
+	#station_id = request.GET.get('id')
+	station = Station.objects.get(id=station_id)
+	serializer = StationSerializer(station)
+	return Response(serializer.data)
+
+
+@api_view(['GET'])
+def trip_details(request, trip_id):
+	trip = Trip.objects.get(id=trip_id)
+	serializer = TripSerializer(trip)
+	return Response(serializer.data)
+
+
+'''@api_view(['GET'])
+def station_trips(request, station_id):
+	#station = Station.objects.get(id=station_id)
+	#trips = Trip.objects.filter(departure_station_id=station_id)
+	trips = Trip.objects.filter(Q(departure_station_id=station_id) | Q(return_station_id=station_id))
+	#Q(destination='New York') | Q(destination='San Francisco')
+	serializer = TripSerializer(trips, many=True)
+	return Response(serializer.data)'''
+
+
+@api_view(['GET'])
+def station_trips_departure(request, station_id):
+	trips = Trip.objects.filter(departure_station_id=station_id)
+	trips_count = trips.count()
+	serializer = TripSerializer(trips, many=True)
+	return Response({'count': trips_count, 'trips': serializer.data})
+
+
+@api_view(['GET'])
+def station_trips_return(request, station_id):
+	trips = Trip.objects.filter(return_station_id=station_id)
+	trips_count = trips.count()
+	serializer = TripSerializer(trips, many=True)
+	return Response({'count': trips_count, 'trips': serializer.data})
 

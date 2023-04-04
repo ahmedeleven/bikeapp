@@ -1,0 +1,95 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+	
+
+
+
+
+
+	<div class="panel panel-default manage_container panel-custom-primary">
+
+
+		<div class="panel-heading">
+			<h4>Trips</h4>
+		</div>
+
+		<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Departure Station</th>
+						<th>Return Station</th>
+						<th>Covered Distance</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if data %}
+						    {% for trip in data.data %}
+						    <tr>
+						    	<td>{{trip.departure_station.nimi}}</td>
+						        <td>{{trip.return_station.nimi}}</td>
+						        <td>{{trip.covered_distance}}</td>
+						        <td>{{trip.duration}}</td>
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There are no trips</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+
+
+
+
+				<ul class="pagination">
+				    {% if data.pages.previous_link %}
+				     	<li><a href="?page={{ data.pages.previous }}">&laquo;</a></li>
+				    {% else %}
+				     	<li class="disabled"><span>&laquo;</span></li>
+				    {% endif %}
+
+				    {% for i in data.pages.previous_pages %}
+				    	<li><a href="?page={{ i }}">{{i}}</a></li>
+				    {% endfor %}
+
+				    <li class="disabled"><span>{{ data.pages.current_page }}</span></li>
+
+				    {% for i in data.pages.next_pages %}
+				    	<li><a href="?page={{ i }}">{{i}}</a></li>
+				    {% endfor %}
+
+
+
+
+				    {% if data.pages.next_link %}
+				    	<li><a href="?page={{ data.pages.next }}">&raquo;</a></li>
+				    {% else %}
+				    	<li class="disabled"><span>&raquo;</span></li>
+				    {% endif %}
+				</ul>
+
+
+
+
+			
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

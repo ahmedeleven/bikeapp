@@ -1,0 +1,99 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+	{{data}}
+	{{pages}}
+
+
+
+
+
+
+		<div class="panel panel-default manage_container panel-custom-primary">
+
+
+		<div class="panel-heading">
+			<h4>Trips</h4>
+		</div>
+
+		<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Departure Time</th>
+						<th>Return Time</th>
+						<th>Covered Distance</th>
+						<th>Duration</th>
+						<th>Departue Station</th>
+						<th>Return Station</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if data %}
+						    {% for trip in data %}
+						    <tr>
+						    	<td>{{trip.results.}}</td>
+						        <td>{{printer.brand}}</td>
+						        <td>{{printer.building}}</td>
+						        <td>{{printer.department}}</td>
+						        <td>{{printer.floor}}</td>
+						        <td>{{printer.room}}</td>
+						        <td>{{printer.ip}}</td>
+						        <td>{{printer.barcode}}</td>
+						        <td>{{printer.reference}}</td>
+						        <td><a href="{% url 'printersView' printer.id %}" class="manage_icons details_icon" title="" data-toggle="tooltip" data-html="true" data-original-title="{{printer.notes|linebreaks}}<br />Click for more details"><span class="glyphicon glyphicon-list-alt icons-style"></span></a></td>
+						        {% if perms.requests.change_printer %}
+						        	<td><a href="{% url 'printersEdit' printer.id %}" class="manage_icons edit_icon" title="" data-toggle="tooltip" data-original-title="Edit"><span class="glyphicon glyphicon-edit icons-style"></span></a></td>
+						        {% endif %}
+						        {% if perms.requests.delete_printer %}
+						        	<td><a href="{% url 'printersDelete' printer.id %}" class="manage_icons delete_icon" title="" data-toggle="tooltip" data-original-title="Delete"><span class="glyphicon glyphicon-trash icons-style"></span></a></td>
+						        {% endif %}
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There is no Printers available</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+			{% if printers.has_other_pages %}
+				<ul class="pagination">
+				    {% if printers.has_previous %}
+				     	<li><a href="?page={{ printers.previous_page_number }}">&laquo;</a></li>
+				    {% else %}
+				     	<li class="disabled"><span>&laquo;</span></li>
+				    {% endif %}
+				    {% for i in printers.paginator.page_range %}
+				    	{% if printers.number == i %}
+				    		<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+				    	{% else %}
+				    		<li><a href="?page={{ i }}">{{ i }}</a></li>
+				    	{% endif %}
+				    {% endfor %}
+				    {% if printers.has_next %}
+				    	<li><a href="?page={{ printers.next_page_number }}">&raquo;</a></li>
+				    {% else %}
+				    	<li class="disabled"><span>&raquo;</span></li>
+				    {% endif %}
+				</ul>
+			{% endif %}
+
+
+			
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+{% endblock %}

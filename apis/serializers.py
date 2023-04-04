@@ -11,6 +11,9 @@ class StationSerializer(serializers.ModelSerializer):
 
 
 class TripSerializer(serializers.ModelSerializer):
+    departure_station = StationSerializer()
+    return_station = StationSerializer()
+
     class Meta:
         model = Trip
         fields = '__all__'

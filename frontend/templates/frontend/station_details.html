@@ -1,0 +1,66 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="panel panel-primary panel-custom-primary">
+	<div class="panel-heading">
+		{{data.name}}
+	</div>
+	<div class="panel-body">
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>Nimi</th>
+					<td>{{data.nimi}}</td>
+				</tr>
+				<tr>
+					<th>Namn</th>
+					<td>{{data.namn}}</td>
+				</tr>
+				<tr>
+					<th>Name</th>
+					<td>{{data.name}}</td>
+				</tr>
+				<tr>
+					<th>Osoite</th>
+					<td>{{data.osoite}}</td>
+				</tr>
+				<tr>
+					<th>Adress</th>
+					<td>{{data.adress}}</td>
+				</tr>
+				<tr>
+					<th>Kaupunki</th>
+					<td>{{data.kaupunki}}</td>
+				</tr>
+				<tr>
+					<th>Stad</th>
+					<td>{{data.stad}}</td>
+				</tr>
+				<tr>
+					<th>Capacity</th>
+					<td>{{data.kapasiteet}}</td>
+				</tr>
+				<tr>
+					<th>X</th>
+					<td>{{data.x}}</td>
+				</tr>
+				<tr>
+					<th>Y</th>
+					<td>{{data.y}}</td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+
+
+
+{% endblock %}
+

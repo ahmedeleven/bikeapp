@@ -67,26 +67,67 @@ def test_function(request):
 @api_view(['GET'])
 def trips_list(request):
 	page_number = request.GET.get('page', 1)
+	page_number = int(page_number)
 	page_size = request.GET.get('page_size', 100)
 	paginator = PageNumberPagination()
 	paginator.page_size = page_size
-	trips = Trip.objects.all()
+	trips = Trip.objects.select_related('departure_station', 'return_station').all()
 	result_page = paginator.paginate_queryset(trips, request)
 	serializer = TripSerializer(result_page, many=True, context={'request': request})
-	return paginator.get_paginated_response(serializer.data)
+	data = serializer.data
+	pages = {
+		'count': paginator.page.paginator.count,
+		'num_pages': paginator.page.paginator.num_pages,
+		'current_page': page_number,
+		'next': page_number+1,
+		'previous': page_number-1,
+	}
+	if paginator.get_previous_link():
+		pages['previous_link'] = paginator.get_previous_link()
+		pages['previous_pages'] = [page_number-i for i in range(1,3) if page_number-i>0]
+	if paginator.get_next_link():
+		pages['next_link'] = paginator.get_next_link()
+		pages['next_pages'] = [page_number+i for i in range(1,3) if page_number+1<=paginator.page.paginator.num_pages]
+
+	return Response({
+		'data': data,
+		'pages': pages,
+	})
 
 
 
 @api_view(['GET'])
 def stations_list(request):
 	page_number = request.GET.get('page',1)
+	page_number = int(page_number)
 	page_size = request.GET.get('page_size',20)
 	paginator = PageNumberPagination()
 	paginator.page_size = page_size
 	stations = Station.objects.all()
 	result_page = paginator.paginate_queryset(stations, request)
 	serializer = StationSerializer(result_page, many=True, context={'request': request})
-	return paginator.get_paginated_response(serializer.data)
+	data = serializer.data
+
+	pages = {
+		'count': paginator.page.paginator.count,
+		'num_pages': paginator.page.paginator.num_pages,
+		'current_page': page_number,
+		'next': page_number+1,
+		'previous': page_number-1,
+	}
+	if paginator.get_previous_link():
+		pages['previous_link'] = paginator.get_previous_link()
+		pages['previous_pages'] = [page_number-i for i in range(1,3) if page_number-i>0]
+	if paginator.get_next_link():
+		pages['next_link'] = paginator.get_next_link()
+		pages['next_pages'] = [page_number+i for i in range(1,3) if page_number+1<=paginator.page.paginator.num_pages]
+
+	return Response({
+		'data': data,
+		'pages': pages,
+	})
+
+	#return Response({'data':result_page})
 
 
 @api_view(['GET'])

@@ -62,3 +62,10 @@ def station_details(request,id):
 
 	# Pass the data to the templates
 	return render(request,"frontend/station_details.html", {'station':station, 'trips_from':trips_from, 'trips_to':trips_to})
+
+
+
+
+# Get station details
+def home(request):
+	return render(request, "frontend/home.html")

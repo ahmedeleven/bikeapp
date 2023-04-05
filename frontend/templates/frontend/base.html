@@ -42,6 +42,7 @@
 	    <script type="text/javascript" src="{% static 'requests/js/select2/dist/js/select2.min.js' %}"></script>
 
 
+	    <!-- colorize the rows in tables -->
 		<script type='text/javascript'>
 			$(document).ready(function(){
 			    $("tbody tr:odd").addClass("tr_odd");
@@ -50,7 +51,7 @@
 			});
 		</script>
 
-
+		<!-- add tooltips to icons -->
 		<script type='text/javascript'>
 			$(document).ready(function() {
 				$('[data-toggle="tooltip"]').tooltip();
@@ -75,7 +76,7 @@
 
 
 
-
+		<!-- navagation menu -->
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid">
 				<div class='navbar-header'>
@@ -107,6 +108,7 @@
 
 			</div>
 		</nav>
+		<!-- END navagation menu -->
 
 
 
@@ -129,7 +131,7 @@
 
 
 
-
+		<!-- page static header -->
 		<div class="page-header">
 			<header class="sb-page-header">
 				<div class="container-fluid">
@@ -147,11 +149,12 @@
 				
 			</header>
 		</div>
+		<!-- END page static header -->
 
 		
 
 
-
+		<!-- all the pages content will be placed here -->
 		<div class='container theme-showcase dynamic-container' role='main'>
 				{% block content %}{% endblock %}
 		</div>

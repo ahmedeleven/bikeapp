@@ -57,33 +57,33 @@
 
 
 
+			<!-- list pagination pages -->
+			<ul class="pagination">
+				{% if data.pages.previous_link %}
+					<li><a href="?page={{ data.pages.previous }}">&laquo;</a></li>
+				{% else %}
+					<li class="disabled"><span>&laquo;</span></li>
+				{% endif %}
 
-				<ul class="pagination">
-				    {% if data.pages.previous_link %}
-				     	<li><a href="?page={{ data.pages.previous }}">&laquo;</a></li>
-				    {% else %}
-				     	<li class="disabled"><span>&laquo;</span></li>
-				    {% endif %}
+				{% for i in data.pages.previous_pages %}
+					<li><a href="?page={{ i }}">{{i}}</a></li>
+				{% endfor %}
 
-				    {% for i in data.pages.previous_pages %}
-				    	<li><a href="?page={{ i }}">{{i}}</a></li>
-				    {% endfor %}
+					<li class="disabled"><span>{{ data.pages.current_page }}</span></li>
 
-				    <li class="disabled"><span>{{ data.pages.current_page }}</span></li>
-
-				    {% for i in data.pages.next_pages %}
-				    	<li><a href="?page={{ i }}">{{i}}</a></li>
-				    {% endfor %}
-
-
+			    {% for i in data.pages.next_pages %}
+			    	<li><a href="?page={{ i }}">{{i}}</a></li>
+			    {% endfor %}
 
 
-				    {% if data.pages.next_link %}
-				    	<li><a href="?page={{ data.pages.next }}">&raquo;</a></li>
-				    {% else %}
-				    	<li class="disabled"><span>&raquo;</span></li>
-				    {% endif %}
-				</ul>
+
+
+			    {% if data.pages.next_link %}
+			    	<li><a href="?page={{ data.pages.next }}">&raquo;</a></li>
+			    {% else %}
+			    	<li class="disabled"><span>&raquo;</span></li>
+			    {% endif %}
+			</ul>
 
 
 

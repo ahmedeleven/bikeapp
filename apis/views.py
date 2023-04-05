@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from .models import Station
 from .models import Trip
 from django.http import HttpResponse
@@ -12,6 +13,8 @@ from rest_framework.decorators import api_view
 from .serializers import TripSerializer, StationSerializer
 from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
+import requests
+
 
 
 
@@ -39,9 +42,6 @@ def import_stations(request):
 def import_trips(request):
 	# Get the data from the datasets and merge them in one dataframe
 	trip_files = ["https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv", "https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv", "https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv"]
-	trips1 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv")
-	trips2 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv")
-	trips3 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv")
 	trips_df = pd.concat([pd.read_csv(file,usecols=["Departure","Return", "Departure station id", "Return station id", "Covered distance (m)", "Duration (sec.)"]) for file in trip_files])
 
 	# Remove unused columns and rename the dataframe column to match the column names in the database
@@ -58,13 +58,14 @@ def import_trips(request):
 	# Get a list of trip objects
 	trips = trips_df.to_dict(orient="records")
 	#trip_objects = [Trip(**row) for row in trips]
+	trip_objects = []
 
 
 	# Create Trip objects with progress bar
 	with tqdm(total=len(trips)) as pbar:
 		for trip in trips:
-			trip['departure_time'] = timezone.make_aware(datetime.strptime(trip['departure_time'], '%Y-%m-%d %H:%M:%S'))
-			trip['return_time'] = timezone.make_aware(datetime.strptime(trip['return_time'], '%Y-%m-%d %H:%M:%S'))
+			#trip['departure_time'] = timezone.make_aware(datetime.strptime(trip['departure_time'], '%Y-%m-%dT%H:%M:%S'))
+			#trip['return_time'] = timezone.make_aware(datetime.strptime(trip['return_time'], '%Y-%m-%dT%H:%M:%S'))
 			trip_object = Trip(**trip)
 			trip_objects.append(trip_object)
 			pbar.update(1)
@@ -82,6 +83,66 @@ def import_trips(request):
 	        progress_bar.update(len(batch))
 
 	return HttpResponse("Done...")
+
+
+
+
+
+# import trips to trips table
+def import_sample_trips(request):
+	# Get the data from the datasets and merge them in one dataframe
+	trips_file = "https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv"
+	trips_sample = pd.read_csv(trips_file, nrows=1000, usecols=["Departure","Return", "Departure station id", "Return station id", "Covered distance (m)", "Duration (sec.)"])
+
+
+	# Remove unused columns and rename the dataframe column to match the column names in the database
+	trips_sample = trips_sample.rename(columns={"Departure":"departure_time","Return":"return_time","Departure station id":"departure_station_id", "Return station id":"return_station_id", "Covered distance (m)":"covered_distance", "Duration (sec.)":"duration"})
+
+	# Replace null values with 0
+	trips_sample["covered_distance"] = trips_sample["covered_distance"].fillna(0)
+	trips_sample["duration"] = trips_sample["duration"].fillna(0)
+
+	# Exclude trips that lasts less than 10 seconds and trips with less than 10 meters distance
+	trips_sample = trips_sample.drop(trips_sample[(trips_sample["duration"] <= 10) & (trips_sample["covered_distance"] <= 10)].index)
+
+
+	# Get a list of trip objects
+	trips = trips_sample.to_dict(orient="records")
+
+	# Insert rows to the database and show progress
+	with tqdm(total=len(trips)) as pbar:
+		for trip in trips:
+			trip['departure_time'] = timezone.make_aware(datetime.strptime(trip['departure_time'], '%Y-%m-%dT%H:%M:%S'))
+			trip['return_time'] = timezone.make_aware(datetime.strptime(trip['return_time'], '%Y-%m-%dT%H:%M:%S'))
+			Trip.objects.create(**trip)
+			pbar.update(1)
+
+
+	return HttpResponse("Done...")
+
+
+
+
+
+
+
+
+
+
+
+
+# Function to test the api
+@api_view(['GET'])
+def test_function(request):
+	return Response({'message': 'Hello!!'})
+
+
+
+
+
+
+
+
 
 
 # Function to test the api

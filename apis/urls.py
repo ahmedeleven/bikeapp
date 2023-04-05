@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
 	path('import_stations/', views.import_stations, name='import_stations'),
 	path('import_trips/', views.import_trips, name='import_trips'),
+	path('import_sample_trips/', views.import_sample_trips, name='import_sample_trips'),
 	path('test_function/', views.test_function, name='test_function'),
 	path('trips/', views.trips_list, name='trips_list'),
 	path('stations/', views.stations_list, name='stations_list'),

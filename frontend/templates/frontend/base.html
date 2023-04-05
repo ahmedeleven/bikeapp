@@ -37,9 +37,9 @@
 
 	    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
-	    <!--<link rel="stylesheet" type="text/css" href="{% static 'requests/js/select2/dist/css/select2.min.css' %}">
+	    <link rel="stylesheet" type="text/css" href="{% static 'requests/js/select2/dist/css/select2.min.css' %}">
 
-	    <script type="text/javascript" src="{% static 'requests/js/select2/dist/js/select2.min.js' %}"></script>-->
+	    <script type="text/javascript" src="{% static 'requests/js/select2/dist/js/select2.min.js' %}"></script>
 
 
 		<script type='text/javascript'>
@@ -51,7 +51,7 @@
 		</script>
 
 
-		<!--<script type='text/javascript'>
+		<script type='text/javascript'>
 			$(document).ready(function() {
 				$('[data-toggle="tooltip"]').tooltip();
 			});
@@ -61,7 +61,7 @@
 			$(document).ready(function() {
 				$('select').select2();
 			});
-		</script>-->
+		</script>
 
 
 		
@@ -93,6 +93,8 @@
 
 							
 							<li><a href="{% url 'stations_list' %}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+							<li><a href="{% url 'stations_list' %}"><span class="glyphicon glyphicon-map-marker"></span> Stations</a></li>
+							<li><a href="{% url 'trips_list' %}"><span class="glyphicon glyphicon-plane"></span> Trips</a></li>
 
 
 										

@@ -31,8 +31,8 @@
 						{% if data %}
 						    {% for trip in data.data %}
 						    <tr>
-						    	<td>{{trip.departure_station.nimi}}</td>
-						        <td>{{trip.return_station.nimi}}</td>
+						    	<td><a href="{% url 'station_details' trip.departure_station.id %}" class="link_item">{{trip.departure_station.nimi}}</a></td>
+						        <td><a href="{% url 'station_details' trip.return_station.id %}" class="link_item">{{trip.return_station.nimi}}</a></td>
 						        <td>{{trip.covered_distance}}</td>
 						        <td>{{trip.duration}}</td>
 						    </tr>
@@ -74,6 +74,8 @@
 				    {% else %}
 				    	<li class="disabled"><span>&raquo;</span></li>
 				    {% endif %}
+
+				    <li class="disabled"><span>{{data.pages.num_pages}} pages</span></li>
 				</ul>
 
 

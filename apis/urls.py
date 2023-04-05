@@ -13,5 +13,7 @@ urlpatterns = [
 	#path('stations/<int:station_id>/trips/', views.station_trips, name='station_trips'),
 	path('stations/<int:station_id>/trips_from/', views.station_trips_departure, name='station_trips_departure'),
 	path('stations/<int:station_id>/trips_to/', views.station_trips_return, name='station_trips_return'),
+	path('stations/<int:station_id>/trips_from/count/', views.station_trips_departure_count, name='station_trips_departure_count'),
+	path('stations/<int:station_id>/trips_to/count/', views.station_trips_return_count, name='station_trips_return_count'),
 	path('trips/<int:trip_id>/', views.trip_details, name='trip_details'),
 ]

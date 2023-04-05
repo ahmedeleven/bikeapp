@@ -164,6 +164,26 @@ def station_trips_departure(request, station_id):
 
 
 @api_view(['GET'])
+def station_trips_departure(request, station_id):
+	trips = Trip.objects.filter(departure_station_id=station_id)
+	trips_count = trips.count()
+	serializer = TripSerializer(trips, many=True)
+	return Response({'count': trips_count, 'trips': serializer.data})
+
+
+@api_view(['GET'])
+def station_trips_departure_count(request, station_id):
+	trips_count = Trip.objects.filter(departure_station_id=station_id).count()
+	return Response({'count': trips_count})
+
+
+@api_view(['GET'])
+def station_trips_return_count(request, station_id):
+	trips_count = Trip.objects.filter(return_station_id=station_id).count()
+	return Response({'count': trips_count})
+
+
+@api_view(['GET'])
 def station_trips_return(request, station_id):
 	trips = Trip.objects.filter(return_station_id=station_id)
 	trips_count = trips.count()

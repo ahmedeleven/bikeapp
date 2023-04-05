@@ -933,3 +933,12 @@ footer .footer-below {
     text-decoration: none;
     background-color: #f5f5f5;
 }
+
+
+.link_item {
+  font-weight: bold;
+}
+
+.link_item:hover {
+  text-decoration: none;
+}

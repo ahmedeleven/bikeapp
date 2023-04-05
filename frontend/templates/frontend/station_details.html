@@ -6,50 +6,58 @@
 
 <div class="panel panel-primary panel-custom-primary">
 	<div class="panel-heading">
-		{{data.name}}
+		{{station.name}}
 	</div>
 	<div class="panel-body">
 		<table class="table">
 			<tbody>
 				<tr>
 					<th>Nimi</th>
-					<td>{{data.nimi}}</td>
+					<td>{{station.nimi}}</td>
 				</tr>
 				<tr>
 					<th>Namn</th>
-					<td>{{data.namn}}</td>
+					<td>{{station.namn}}</td>
 				</tr>
 				<tr>
 					<th>Name</th>
-					<td>{{data.name}}</td>
+					<td>{{station.name}}</td>
 				</tr>
 				<tr>
 					<th>Osoite</th>
-					<td>{{data.osoite}}</td>
+					<td>{{station.osoite}}</td>
 				</tr>
 				<tr>
 					<th>Adress</th>
-					<td>{{data.adress}}</td>
+					<td>{{station.adress}}</td>
 				</tr>
 				<tr>
 					<th>Kaupunki</th>
-					<td>{{data.kaupunki}}</td>
+					<td>{{station.kaupunki}}</td>
 				</tr>
 				<tr>
 					<th>Stad</th>
-					<td>{{data.stad}}</td>
+					<td>{{station.stad}}</td>
 				</tr>
 				<tr>
 					<th>Capacity</th>
-					<td>{{data.kapasiteet}}</td>
+					<td>{{station.kapasiteet}}</td>
+				</tr>
+				<tr>
+					<th>Number of trips starts here</th>
+					<td>{{trips_from.count}}</td>
+				</tr>
+				<tr>
+					<th>Number of trips ends here</th>
+					<td>{{trips_to.count}}</td>
 				</tr>
 				<tr>
 					<th>X</th>
-					<td>{{data.x}}</td>
+					<td>{{station.x}}</td>
 				</tr>
 				<tr>
 					<th>Y</th>
-					<td>{{data.y}}</td>
+					<td>{{station.y}}</td>
 				</tr>
 				
 				
@@ -57,7 +65,6 @@
 		</table>
 	</div>
 </div>
-
 
 
 

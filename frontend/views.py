@@ -47,6 +47,13 @@ def trips_list(request):
 
 
 def station_details(request,id):
-	response = requests.get(SERVER_URL+'api/stations/'+str(id))
-	data = response.json()
-	return render(request,"frontend/station_details.html", {'data':data,})
+	get_station = requests.get(SERVER_URL+'api/stations/'+str(id))
+	station = get_station.json()
+
+	get_trips_from = requests.get(SERVER_URL+'api/stations/'+str(id)+'/trips_from/count/')
+	trips_from = get_trips_from.json()
+
+	get_trips_to = requests.get(SERVER_URL+'api/stations/'+str(id)+'/trips_to/count/')
+	trips_to = get_trips_to.json()
+
+	return render(request,"frontend/station_details.html", {'station':station, 'trips_from':trips_from, 'trips_to':trips_to})

@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import TripSerializer, StationSerializer
 from rest_framework.pagination import PageNumberPagination
+from django.utils import timezone
+
 
 
 
@@ -36,13 +38,13 @@ def import_stations(request):
 # import trips to trips table
 def import_trips(request):
 	# Get the data from the datasets and merge them in one dataframe
+	trip_files = ["https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv", "https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv", "https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv"]
 	trips1 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv")
 	trips2 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv")
 	trips3 = pd.read_csv("https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv")
-	trips_df = pd.concat([trips1,trips2,trips3])
+	trips_df = pd.concat([pd.read_csv(file,usecols=["Departure","Return", "Departure station id", "Return station id", "Covered distance (m)", "Duration (sec.)"]) for file in trip_files])
 
 	# Remove unused columns and rename the dataframe column to match the column names in the database
-	trips_df = trips_df.drop(["Departure station name","Return station name"], axis=1)
 	trips_df = trips_df.rename(columns={"Departure":"departure_time","Return":"return_time","Departure station id":"departure_station_id", "Return station id":"return_station_id", "Covered distance (m)":"covered_distance", "Duration (sec.)":"duration"})
 
 	# Replace null values with 0
@@ -50,12 +52,24 @@ def import_trips(request):
 	trips_df["duration"] = trips_df["duration"].fillna(0)
 
 	# Exclude trips that lasts less than 10 seconds and trips with less than 10 meters distance
-	trips_df = trips_df.drop(trips_df[trips_df["duration"] <= 10].index)
-	trips_df = trips_df.drop(trips_df[trips_df["covered_distance"] <= 10].index)
+	trips_df = trips_df.drop(trips_df[(trips_df["duration"] <= 10) & (trips_df["covered_distance"] <= 10)].index)
+
 
 	# Get a list of trip objects
 	trips = trips_df.to_dict(orient="records")
-	trip_objects = [Trip(**row) for row in trips]
+	#trip_objects = [Trip(**row) for row in trips]
+
+
+	# Create Trip objects with progress bar
+	with tqdm(total=len(trips)) as pbar:
+		for trip in trips:
+			trip['departure_time'] = timezone.make_aware(datetime.strptime(trip['departure_time'], '%Y-%m-%d %H:%M:%S'))
+			trip['return_time'] = timezone.make_aware(datetime.strptime(trip['return_time'], '%Y-%m-%d %H:%M:%S'))
+			trip_object = Trip(**trip)
+			trip_objects.append(trip_object)
+			pbar.update(1)
+
+
 
 	batch_size = 10000  # number of objects to create in a batch
 	num_batches = (len(trip_objects) // batch_size) + 1   # number of batches

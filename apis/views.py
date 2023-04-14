@@ -6,7 +6,7 @@ from .models import Station
 from .models import Trip
 from django.http import HttpResponse
 from tqdm import tqdm
-from django.db.models import Q
+from django.db.models import Q, Count
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -142,13 +142,6 @@ def test_function(request):
 
 
 
-
-
-
-# Function to test the api
-@api_view(['GET'])
-def test_function(request):
-	return Response({'message': 'Hello!!'})
 
 
 
@@ -289,6 +282,27 @@ def top_trips_by_duration(request, trips_count):
 	trips = Trip.objects.all().order_by('-duration')[:trips_count]
 	serializer = TripSerializer(trips, many=True, context={'request': request})
 	return Response({'trips':serializer.data})
+
+
+
+# Get top trips starting from station
+@api_view(['GET'])
+def top_trips_from(request, n):
+	top_stations = Trip.objects.values('departure_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
+	return Response({'stations':top_stations})
+
+
+
+
+
+# Get top trips ends in a station
+@api_view(['GET'])
+def top_trips_to(request, n):
+	top_stations = Trip.objects.values('return_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
+	return Response({'stations':top_stations})
+
+
+
 
 
 

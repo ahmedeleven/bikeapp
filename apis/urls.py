@@ -19,4 +19,6 @@ urlpatterns = [
 	path('trips/<int:trip_id>/', views.trip_details, name='trip_details'),
 	path('trips/top_distance/<int:trips_count>/', views.top_trips_by_distance, name='top_trips_by_distance'),
 	path('trips/top_duration/<int:trips_count>/', views.top_trips_by_duration, name='top_trips_by_duration'),
+	path('trips/top_from/<int:n>/', views.top_trips_from, name='top_trips_from'),
+	path('trips/top_to/<int:n>', views.top_trips_to, name='top_trips_to'),
 ]

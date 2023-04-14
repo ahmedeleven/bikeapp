@@ -288,7 +288,7 @@ def top_trips_by_duration(request, trips_count):
 # Get top trips starting from station
 @api_view(['GET'])
 def top_trips_from(request, n):
-	top_stations = Trip.objects.values('departure_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
+	top_stations = Trip.objects.values('departure_station','departure_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
 	return Response({'stations':top_stations})
 
 
@@ -298,7 +298,7 @@ def top_trips_from(request, n):
 # Get top trips ends in a station
 @api_view(['GET'])
 def top_trips_to(request, n):
-	top_stations = Trip.objects.values('return_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
+	top_stations = Trip.objects.values('return_station','return_station__nimi').annotate(count=Count('id')).order_by('-count')[:n]
 	return Response({'stations':top_stations})
 
 

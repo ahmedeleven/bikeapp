@@ -113,7 +113,110 @@
 </div>
 
 
-{{top_stations_from}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-default manage_container panel-custom-primary">
+
+
+	<div class="panel-heading">
+			<h4>Most popular departure stations</h4>
+	</div>
+
+	<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Station</th>
+						<th>Trips</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if top_stations_from %}
+						    {% for station in top_stations_from.stations %}
+						    <tr>
+						    	<td><a href="{% url 'station_details' station.departure_station %}" class="link_item">{{station.departure_station__nimi}}</a></td>
+						        <td>{{station.count}}</td>
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There are no stations</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+
+
+
+			
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="panel panel-default manage_container panel-custom-primary">
+
+
+	<div class="panel-heading">
+			<h4>Most popular return stations</h4>
+	</div>
+
+	<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Station</th>
+						<th>Trips</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if top_stations_to %}
+						    {% for station in top_stations_to.stations %}
+						    <tr>
+						    	<td><a href="{% url 'station_details' station.return_station %}" class="link_item">{{station.return_station__nimi}}</a></td>
+						        <td>{{station.count}}</td>
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There are no stations</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+
+
+
+			
+	</div>
+
+</div>
+
 
 
 

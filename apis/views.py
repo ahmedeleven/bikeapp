@@ -274,3 +274,22 @@ def station_trips_return_count(request, station_id):
 
 
 
+# Get top N trips by distance
+@api_view(['GET'])
+def top_trips_by_distance(request, trips_count):
+	trips = Trip.objects.all().order_by('-covered_distance')[:trips_count]
+	serializer = TripSerializer(trips, many=True, context={'request': request})
+	return Response({'trips':serializer.data})
+
+
+
+# Get top N trips by duration
+@api_view(['GET'])
+def top_trips_by_duration(request, trips_count):
+	trips = Trip.objects.all().order_by('-duration')[:trips_count]
+	serializer = TripSerializer(trips, many=True, context={'request': request})
+	return Response({'trips':serializer.data})
+
+
+
+

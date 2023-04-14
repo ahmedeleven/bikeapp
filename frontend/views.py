@@ -68,4 +68,8 @@ def station_details(request,id):
 
 # Get station details
 def home(request):
-	return render(request, "frontend/home.html")
+	get_trips_by_duration = requests.get(SERVER_URL+'api/trips/top_duration/5')
+	trips_by_duration = get_trips_by_duration.json()
+	get_trips_by_distance = requests.get(SERVER_URL+'api/trips/top_distance/5')
+	trips_by_distance = get_trips_by_distance.json()
+	return render(request, "frontend/home.html", {'trips_by_duration':trips_by_duration, 'trips_by_distance':trips_by_distance})

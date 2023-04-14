@@ -8,4 +8,112 @@
 <p>The project was made based on Solita company exercise made for Dev Academy pre-assignment</p>
 
 <p>The project contains 2 apps (the API app which uses djangorestframework, and the front end app)</p>
+
+
+<div class="panel panel-default manage_container panel-custom-primary">
+
+
+	<div class="panel-heading">
+			<h4>Top Trips By Distance</h4>
+	</div>
+
+	<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Departure Station</th>
+						<th>Return Station</th>
+						<th>Covered Distance</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if trips_by_distance %}
+						    {% for trip in trips_by_distance.trips %}
+						    <tr>
+						    	<td><a href="{% url 'station_details' trip.departure_station.id %}" class="link_item">{{trip.departure_station.nimi}}</a></td>
+						        <td><a href="{% url 'station_details' trip.return_station.id %}" class="link_item">{{trip.return_station.nimi}}</a></td>
+						        <td>{{trip.covered_distance}}</td>
+						        <td>{{trip.duration}}</td>
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There are no trips</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+
+
+
+			
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-default manage_container panel-custom-primary">
+
+
+	<div class="panel-heading">
+			<h4>Top Trips By Duration</h4>
+	</div>
+
+	<div class="panel-body">
+			<table class="table-responsive table_custom_manage">
+				<thead>
+					<tr>
+						<th>Departure Station</th>
+						<th>Return Station</th>
+						<th>Covered Distance</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+						{% if trips_by_duration %}
+						    {% for trip in trips_by_duration.trips %}
+						    <tr>
+						    	<td><a href="{% url 'station_details' trip.departure_station.id %}" class="link_item">{{trip.departure_station.nimi}}</a></td>
+						        <td><a href="{% url 'station_details' trip.return_station.id %}" class="link_item">{{trip.return_station.nimi}}</a></td>
+						        <td>{{trip.covered_distance}}</td>
+						        <td>{{trip.duration}}</td>
+						    </tr>
+						    {% endfor %}
+						{% else %}
+						    <p>There are no trips</p>
+						{% endif %}
+						
+					
+				</tbody>
+			</table>
+
+
+
+
+			
+	</div>
+
+</div>
+
+
+
+
+
 {% endblock %}

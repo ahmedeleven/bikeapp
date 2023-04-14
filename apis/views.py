@@ -52,7 +52,7 @@ def import_trips(request):
 	trips_df["duration"] = trips_df["duration"].fillna(0)
 
 	# Exclude trips that lasts less than 10 seconds and trips with less than 10 meters distance
-	trips_df = trips_df.drop(trips_df[(trips_df["duration"] <= 10) & (trips_df["covered_distance"] <= 10)].index)
+	trips_df = trips_df.drop(trips_df[(trips_df["duration"] <= 10) | (trips_df["covered_distance"] <= 10)].index)
 
 
 	# Get a list of trip objects
@@ -103,7 +103,7 @@ def import_sample_trips(request):
 	trips_sample["duration"] = trips_sample["duration"].fillna(0)
 
 	# Exclude trips that lasts less than 10 seconds and trips with less than 10 meters distance
-	trips_sample = trips_sample.drop(trips_sample[(trips_sample["duration"] <= 10) & (trips_sample["covered_distance"] <= 10)].index)
+	trips_sample = trips_sample.drop(trips_sample[(trips_sample["duration"] <= 10) | (trips_sample["covered_distance"] <= 10)].index)
 
 
 	# Get a list of trip objects

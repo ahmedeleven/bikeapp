@@ -66,7 +66,7 @@ def station_details(request,id):
 
 
 
-# Get station details
+# Get stats for homepage
 def home(request):
 	get_trips_by_duration = requests.get(SERVER_URL+'api/trips/top_duration/5')
 	trips_by_duration = get_trips_by_duration.json()
